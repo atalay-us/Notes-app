@@ -1,0 +1,32 @@
+.create-btn {
+  background-color: var(--nav-bg-color);
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 200px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, background-color 0.2s;
+  border: 1px solid var(--text-color);
+}
+
+.create-btn:hover {
+  transform: translateY(-5px); 
+  background-color: var(--btn-hover);
+}
+
+.create-btn h3 {
+  color: var(--text-color);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.create-btn svg {
+  color: var(--text-color);
+  font-size: 4rem; 
+}

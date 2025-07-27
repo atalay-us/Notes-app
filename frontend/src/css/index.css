@@ -1,0 +1,28 @@
+:root {
+    --bg-color: #FFF2E0;
+    --nav-bg-color: #C0C9EE;
+    --nav-menu-color: #898AC4;
+    --btn-hover: #FFF2E0;
+    --text-color: black;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1E201E;
+    --nav-bg-color: #3C3D37;
+    --nav-menu-color: #697565;
+    --btn-hover: #1E201E;
+    --text-color: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
