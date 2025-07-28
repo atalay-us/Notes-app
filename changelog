@@ -1,17 +1,15 @@
-1.0:İnitial stage
+# Changelog
 
-1.1:İmplemented e-mail verification on backend and frontend.
-    
-    When users register for the first time they get an email contains email-verification-token.
-    
-    İf users are not verified and try open homepage they get a message navigates them to the "/verify-email" page and says "You are not verifed. Please verify your account".
+## 1.0: Initial Release
+- Implemented core application functionality.
 
-    In "/verify-email" page users can verify their e-mail by using verification token that sent to their e-mails.
-
-    After a day when users verification token has been sent to the users' email, verification token expires and users can no longer use their tokens for verify their emails.
-
-    If verification token expires users can access their new tokens by pressing "Resend" button.
-
-    After user is verified they can no longer acces "/verify-email" page.
+## 1.1: Email Verification
+- Added email verification for user registration on both backend and frontend.
+  - Upon registration, users receive an email containing a verification token.
+  - Unverified users attempting to access the homepage are redirected to the `/verify-email` page with a message: "You are not verified. Please verify your account."
+  - On the `/verify-email` page, users can verify their email using the token sent to their email address.
+  - Verification tokens expire after 24 hours from the time they are sent.
+  - Users can request a new verification token by clicking the "Resend" button if the original token expires.
+  - Verified users are restricted from accessing the `/verify-email` page.
 
 
