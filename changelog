@@ -6,10 +6,11 @@
 ## 1.1: Email Verification
 - Added email verification for user registration on both backend and frontend.
   - Upon registration, users receive an email containing a verification token.
-  - Unverified users attempting to access the homepage are redirected to the `/verify-email` page with a message: "You are not verified. Please verify your account."
+  - Unverified users attempting to access the homepage see an overlay with the message: "User email is not verified. Please verify your e-mail." and a link to the `/verify-email` page
   - On the `/verify-email` page, users can verify their email using the token sent to their email address.
   - Verification tokens expire after 24 hours from the time they are sent.
   - Users can request a new verification token by clicking the "Resend" button if the original token expires.
   - Verified users are restricted from accessing the `/verify-email` page.
 
-
+  ## [Unreleased]
+- Planned: Password reset functionality via email.
