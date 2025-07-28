@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import Card from "../components/Card.jsx";
 import CreateBtn from "../components/CreateBtn.jsx";
@@ -7,7 +8,7 @@ import NoteForm from "../components/NoteForm.jsx";
 import SearchBar from "../components/SearchBar.jsx";
 import "../css/homepage.css";
 
-const HomePage = () => {
+const HomePage = ({ user }) => {
   const [showForm, setShowForm] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const [searchValue, setSearchValue] = useState("");
@@ -59,24 +60,19 @@ const HomePage = () => {
 
   return (
     <div className="homepage">
-      <SearchBar searchvalue={searchValue} setSearchValue={setSearchValue} />
-      <div className="notes-grid">
-        <CreateBtn onClick={() => setShowForm(true)} />
-        {unpinnedNotes.map((note) => (
-          <Card
-            key={note._id}
-            note={note}
-            onDelete={() => deleteMutation.mutate(note._id)}
-            onPin={() => pinMutation.mutate(note._id)}
-            onClick={() => handleCardClick(note)}
-          />
-        ))}
-      </div>
-      {pinnedNotes.length > 0 && (
+      {!user.isVerified ?
+        <div className="nav-verify-overlay">
+          <div className="nav-verify">
+            <h2>User email is not verified. Please verify your e-mail.</h2>
+            <p>To verify your email <Link to={"/verify-email"}> please click here.</Link></p>
+          </div>
+        </div>
+        :
         <>
-          <h2>Pinned Notes</h2>
+          <SearchBar searchvalue={searchValue} setSearchValue={setSearchValue} />
           <div className="notes-grid">
-            {pinnedNotes.map((note) => (
+            <CreateBtn onClick={() => setShowForm(true)} />
+            {unpinnedNotes.map((note) => (
               <Card
                 key={note._id}
                 note={note}
@@ -86,17 +82,32 @@ const HomePage = () => {
               />
             ))}
           </div>
-        </>
-      )}
-      {showForm && (
-        <NoteForm
-          note={selectedNote}
-          onClose={() => {
-            setShowForm(false);
-            setSelectedNote(null);
-          }}
-        />
-      )}
+          {pinnedNotes.length > 0 && (
+            <>
+              <h2>Pinned Notes</h2>
+              <div className="notes-grid">
+                {pinnedNotes.map((note) => (
+                  <Card
+                    key={note._id}
+                    note={note}
+                    onDelete={() => deleteMutation.mutate(note._id)}
+                    onPin={() => pinMutation.mutate(note._id)}
+                    onClick={() => handleCardClick(note)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
+          {showForm && (
+            <NoteForm
+              note={selectedNote}
+              onClose={() => {
+                setShowForm(false);
+                setSelectedNote(null);
+              }}
+            />
+          )}</>}
+
     </div>
   );
 };

@@ -21,7 +21,7 @@ const Register = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(["auth"]);
-      navigate("/");
+      navigate("/login");
     },
     onError: (err) => {
       alert(err.response?.data?.error || "Server error.");

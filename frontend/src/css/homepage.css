@@ -28,3 +28,41 @@ h2 {
   margin: 2rem 0 1rem;
   font-size: 1.5rem;
 }
+
+.nav-verify {
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--text-color);
+  border-radius: 5px;
+  background-color: var(--nav-menu-color);
+  padding: 25px;
+}
+
+.nav-verify h2 {
+  margin-bottom: 10px;
+}
+
+.nav-verify p {
+  color: var(--text-color);
+  font-size: 1.5rem;
+}
+
+.nav-verify a {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.nav-verify a:hover {
+  color: var(--text-color);
+  text-decoration: underline;
+}
+
+.nav-verify-overlay {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
