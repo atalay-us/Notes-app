@@ -1,9 +1,17 @@
 import bcrypt from 'bcrypt';
+import crypto from 'crypto';
+
 import User from '../models/user-model.js';
 
 import { generateTokenAndSetCookie } from '../utils/generateTokenAndSetCookie.js';
 
-//import { sendVerificationEmail, sendWelcomeEmail } from '../mailtrap/sendEmails.js';
+/*import {
+    sendVerificationEmail,
+    sendWelcomeEmail,
+    sendPasswordResetEmail,
+    sendPasswordResetSuccessEmail,
+}from '../mailtrap/sendEmails.js';
+*/
 
 const saltrounds = 10;
 
@@ -189,7 +197,7 @@ export const checkVerificationCode = async (req, res) => {
 
         if (!user) {
             return res.status(401).json({ error: "Invalid or expired verification token" });
-        } 
+        }
 
         user.isVerified = true;
         user.verificationToken = undefined;
@@ -211,6 +219,79 @@ export const checkVerificationCode = async (req, res) => {
         });
     } catch (error) {
         console.error("Email verification error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+export const sendPasswordResetToken = async (req, res) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({ error: "Email is required" });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ error: "User with this email does not exist" });
+        }
+
+        const resetToken = crypto.randomBytes(20).toString("hex");
+        const resetTokenExpiresAt = new Date(Date.now() + 1 * 60 * 60 * 1000); // 1 hour from now
+
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpiresAt = resetTokenExpiresAt;
+        await user.save();
+
+        //await sendPasswordResetEmail(user.email, resetToken);
+
+        res.status(200).json({
+            message: "Password reset email sent successfully. Please check your inbox.",
+        });
+    } catch (error) {
+        console.error("Forgot password error:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+export const changePassword = async (req, res) => {
+    try {
+        const { token, email, password } = req.body;
+
+        if (!token) {
+            return res.status(401).json({ error: "Password reset token is required" });
+        }
+
+        if (!email || !password) {
+            return res.status(400).json({ error: "Username and password are required" });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({ error: "Password must be at least 6 characters long" });
+        }
+
+        const user = await User.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpiresAt: { $gt: Date.now() },
+            email
+        });
+
+        if (!user) {
+            return res.status(400).json({ error: "Invalid or expired password reset token" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, saltrounds);
+        user.password = hashedPassword;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpiresAt = undefined;
+        await user.save();
+
+        //await sendPasswordResetSuccessEmail(user.email);
+
+        res.status(200).json({
+            message: "Password reset successfully. You can now log in with your new password.",
+        });
+    } catch (error) {
+        console.error("Reset password error:", error);
         res.status(500).json({ error: "Internal server error" });
     }
 }

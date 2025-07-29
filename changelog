@@ -1,17 +1,29 @@
-1.0:İnitial stage
+# Changelog
 
-1.1:İmplemented e-mail verification on backend and frontend.
-    
-    When users register for the first time they get an email contains email-verification-token.
-    
-    İf users are not verified and try open homepage they get a message navigates them to the "/verify-email" page and says "You are not verifed. Please verify your account".
+## 1.0: Initial Release
+- Implemented core application functionality.
 
-    In "/verify-email" page users can verify their e-mail by using verification token that sent to their e-mails.
+## 1.1: Email Verification
+- Added email verification for user registration on both backend and frontend.
+  - Upon registration, users receive an email containing a verification token.
+  - Unverified users attempting to access the homepage see an overlay with the message: "User email is not verified. Please verify your e-mail." and a link to the `/verify-email` page
+  - On the `/verify-email` page, users can verify their email using the token sent to their email address.
+  - Verification tokens expire after 24 hours from the time they are sent.
+  - Users can request a new verification token by clicking the "Resend" button if the original token expires.
+  - Verified users are restricted from accessing the `/verify-email` page.
 
-    After a day when users verification token has been sent to the users' email, verification token expires and users can no longer use their tokens for verify their emails.
+## 1.2: Password Reset and Settings Menu Update
+- Added
+  - Password reset functionality for user accounts.
+  - Users can navigate to the /reset-password page to change their password.
+  - Backend: Implemented /send-password-reset-token (POST) and /reset-password (POST) endpoints using Node.js and MongoDB.
+  - Frontend: Created ChangePasswordPage.jsx for password reset UI, accepting email, token, and new password as input.
+  - Logged-in users can access the /reset-password page via the "Change your password" button in the settings menu.
+  - Clicking this button sends a password reset token to the user’s email.
+  - Non-logged-in users can access the /reset-password page via a "Forgot your password?" link on the login page, which appears after entering incorrect login credentials once
+  - On the /reset-password page, non-logged-in users enter their email and click the "Send password reset token" button to receive a token.
+  - After receiving the token, non-logged-in users can enter their email, token, and new password to reset their password.
+  - Password reset tokens expire after 1 hour.
 
-    If verification token expires users can access their new tokens by pressing "Resend" button.
-
-    After user is verified they can no longer acces "/verify-email" page.
-
-
+- Updated the settings menu in Navbar.jsx.
+  - Replaced text in the theme toggle button with appropriate icons (e.g., MdDarkMode and MdLightMode from react-icons).

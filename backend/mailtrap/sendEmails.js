@@ -37,14 +37,14 @@ export const sendWelcomeEmail = async (email, username) => {
     }
 }
 
-export const sendPasswordResetEmail = async (email, resetURL) => {
+export const sendPasswordResetEmail = async (email, resetToken) => {
     try {
         const recipient = [{ email }];
         await mailtrapClient.send({
             from: sender,
             to: recipient,
             subject: "Password Reset Request",
-            html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{resetURL}", resetURL),
+            html: PASSWORD_RESET_REQUEST_TEMPLATE.replace("{token}", resetToken),
             category: "Password Reset"
         });
     } catch (error) {

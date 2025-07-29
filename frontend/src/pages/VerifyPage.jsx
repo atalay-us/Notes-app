@@ -12,9 +12,8 @@ const VerifyPage = ({ user }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (inputs.current[0]) {
-            inputs.current[0].focus();
-        }
+        if (inputs.current[0]) inputs.current[0].focus();
+        
     }, []);
 
     const verifyEmailMutation = useMutation({
